@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
   entry: "./web/index.js",
@@ -17,10 +18,12 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new CopyWebpackPlugin([
-      { from: "assets/images" },
-      { from: "assets/audio" },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [{ from: "assets/images" }, { from: "assets/audio" }],
+    }),
+    new webpack.DefinePlugin({
+      PLATFORM: JSON.stringify("web"),
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "index.html"),
     }),
